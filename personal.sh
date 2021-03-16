@@ -1,5 +1,7 @@
 #! /bin/bash
 
+rm -rf ~/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
+
 mkdir -p ~/.config/nvim/
 cp init.vim ~/.config/nvim/init.vim
 
