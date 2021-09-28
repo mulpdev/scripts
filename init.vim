@@ -1,4 +1,4 @@
-# belongs at ~/.config/nvim/init.vim
+" belongs at ~/.config/nvim/init.vim
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 source ~/.vimrc
