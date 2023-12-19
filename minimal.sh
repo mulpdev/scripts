@@ -1,5 +1,6 @@
 #! /bin/sh
 
+set -x
 set -e # stop on first error
 
 DEPS="./deps"
@@ -34,7 +35,7 @@ rhel_derivative()
 #######
 
 # Remove default directories
-rm -rf ~/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
+rm -rf $HOME/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
 
 # Install programs with system package manager
 if [ -n "$INSTALL" ]; then
@@ -91,8 +92,8 @@ fi
 
 # Install from $DEPS
 if [ -n "$CONFIGURE" ]; then
-	VIM_COLORS="~/.vim/colors/"
-	VIM_PLUGINS_START="~/.vim/pack/plugins/start/"
+	VIM_COLORS="$HOME/.vim/colors/"
+	VIM_PLUGINS_START="$HOME/.vim/pack/plugins/start/"
 	
 	mkdir -p $VIM_COLORS
 	mkdir -p $VIM_PLUGINS_START
@@ -105,8 +106,8 @@ if [ -n "$CONFIGURE" ]; then
 	cp -r $DEPS/nim $VIM_PLUGINS_START
 
 	# Place config files
-	mkdir -p ~/.config/nvim/
-	cp init.vim ~/.config/nvim/init.vim
-	cp .vimrc ~/
-	cp .tmux.conf ~/
+	mkdir -p $HOME/.config/nvim/
+	cp init.vim $HOME/.config/nvim/init.vim
+	cp .vimrc $HOME/
+	cp .tmux.conf $HOME/
 fi
