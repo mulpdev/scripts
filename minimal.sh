@@ -15,13 +15,10 @@ do
 	esac
 done
 
-# install and enable openssh server
-# install curl, wget, nvim, git, xxd, tmux, python3, C/C++/gas compiler, nasm, clang, cmake, rsync
-
 debian_derivative()
 {
 	# vim-common is for xxd
-	sudo apt install openssh-server curl wget neovim git vim-common tmux python3 build-essential nasm clang cmake rsync
+	sudo apt install openssh-server curl wget neovim git vim-common tmux rsync
 	sudo systemctl enable ssh
 }
 
@@ -33,9 +30,6 @@ rhel_derivative()
 #######
 # MAIN
 #######
-
-# Remove default directories
-rm -rf $HOME/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
 
 # Install programs with system package manager
 if [ -n "$INSTALL" ]; then
@@ -86,12 +80,12 @@ if [ -n "$DOWNLOAD" ]; then
 
 	git clone --depth 1 https://github.com/sheerun/vim-polyglot $DEPS/vim-polyglot
 	git clone https://github.com/christoomey/vim-tmux-navigator.git $DEPS/vim-tmux-navigator
-	git clone https://github.com/ziglang/zig.vim $DEPS/zig
-	git clone https://github.com/zah/nim.vim $DEPS/nim
 fi
 
-# Install from $DEPS
 if [ -n "$CONFIGURE" ]; then
+	# Remove default directories
+	rm -rf $HOME/Documents $HOME/Music $HOME/Pictures $HOME/Public $HOME/Templates $HOME/Videos
+
 	VIM_COLORS="$HOME/.vim/colors/"
 	VIM_PLUGINS_START="$HOME/.vim/pack/plugins/start/"
 	
@@ -99,15 +93,21 @@ if [ -n "$CONFIGURE" ]; then
 	mkdir -p $VIM_PLUGINS_START
 	
 	cp -r $DEPS/wombat256grf.vim $VIM_COLORS
-	
 	cp -r $DEPS/vim-polyglot $VIM_PLUGINS_START
 	cp -r $DEPS/vim-tmux-navigator $VIM_PLUGINS_START
-	cp -r $DEPS/zig $VIM_PLUGINS_START
-	cp -r $DEPS/nim $VIM_PLUGINS_START
 
 	# Place config files
 	mkdir -p $HOME/.config/nvim/
 	cp init.vim $HOME/.config/nvim/init.vim
 	cp .vimrc $HOME/
 	cp .tmux.conf $HOME/
+
+	# Update tmux.conf with everything in triple backtick markdown
+	README=$DEPS/vim-tmux-navigator/README.md
+	LINE=$(grep -n -m1 '``` tmux' $README)	# find first markdown code block opening with ``` tmux
+	LINE=$(echo $LINE | cut -d':' -f1)			# isolate line number
+	LINE=$((LINE+1))												# Next line to avoid occurance of  ``` tmux
+	# can't exapnd variables in single quotes, thus the goofy concatenation but putting ' before and after variable
+	CONFIG=$(sed -n ''$LINE',/```/p' $README | tr -d "\`") # print everything from LINE+1 until first occurance of ```
+	printf '%s\n' "$CONFIG" >> qqq
 fi

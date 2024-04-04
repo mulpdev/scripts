@@ -1,5 +1,7 @@
 #! /bin/bash
 
+sudo apt install python3 build-essential nasm clang cmake
+
 # Install Nim language and LSP ( export PATH=/home/devel/.nimble/bin:$PATH )
 curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 nimble install nimlsp
