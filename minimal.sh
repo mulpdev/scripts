@@ -109,5 +109,5 @@ if [ -n "$CONFIGURE" ]; then
 	LINE=$((LINE+1))												# Next line to avoid occurance of  ``` tmux
 	# can't exapnd variables in single quotes, thus the goofy concatenation but putting ' before and after variable
 	CONFIG=$(sed -n ''$LINE',/```/p' $README | tr -d "\`") # print everything from LINE+1 until first occurance of ```
-	printf '%s\n' "$CONFIG" >> qqq
+	printf '%s\n' "$CONFIG" >> $HOME/.tmux.conf
 fi
